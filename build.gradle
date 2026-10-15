@@ -1,0 +1,55 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle.userdev' version '5.1.+'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'forge'
+        url = 'https://files.minecraftforge.net/maven'
+    }
+}
+
+ext.group = 'com.delgadogermayne'
+version = '1.0.0'
+archivesBaseName = 'rhythmgamemod'
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+        }
+        server {
+            workingDirectory project.file('run')
+        }
+        data {
+            workingDirectory project.file('run')
+        }
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.1.0'
+    minecraft 'net.minecraft:client:1.20.1'
+    minecraft 'net.minecraft:server:1.20.1'
+    minecraft 'net.minecraft:common:1.20.1'
+
+    compileOnly 'net.minecraftforge:fmlloader:1.20.1-47.1.0'
+    compileOnly 'net.minecraftforge:forge:1.20.1-47.1.0:userdev'
+    runtimeOnly 'net.minecraftforge:forge:1.20.1-47.1.0:userdev'
+}
+
+processResources {
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        include 'META-INF/mods.toml'
+        expand 'META-INF.mods.toml': [
+            version: project.version,
+            mcversion: project.minecraft.version
+        ]
+    }
+}
